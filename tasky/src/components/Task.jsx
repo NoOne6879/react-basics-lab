@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -6,13 +7,22 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DoneIcon from "@mui/icons-material/Done";
+import Alert from "@mui/material/Alert";
 
 const Task = (props) => {
   return (
-    <Grid key={props.id} size={{ xs: 12, md: 4 }}>
+    <Grid key={props.id} size={{ xs: 12, md: 6, lg: 4 }}>
       <Card
         sx={{
-          backgroundColor: props.done ? "lightgrey" : "lightblue",
+          backgroundColor: props.done
+            ? "lightgrey"
+            : props.priority === "Low"
+              ? "success.light"
+              : props.priority === "Medium"
+                ? "warning.light"
+                : "error.light",
           padding: "20px",
         }}
       >
@@ -20,6 +30,7 @@ const Task = (props) => {
           title={props.title}
           sx={{
             backgroundColor: "white",
+            fontStyle: "italic",
             borderRadius: "3px",
             padding: "20px",
             textAlign: "center",
@@ -32,12 +43,20 @@ const Task = (props) => {
               justifyContent: "center",
               alignItems: "baseline",
               mb: 2,
-              padding: "20px",
+              padding: "10px",
             }}
           >
-            <Typography component="p" variant="subtitle2" color="text.primary">
+            <Alert
+              severity={
+                props.priority === "Low"
+                  ? "info"
+                  : props.priority === "Medium"
+                    ? "warning"
+                    : "error"
+              }
+            >
               Due: {props.deadline}
-            </Typography>
+            </Alert>
           </Box>
 
           <Typography
@@ -62,6 +81,7 @@ const Task = (props) => {
             color="success"
             onClick={props.markDone}
           >
+            <DoneIcon />
             Done
           </Button>
 
@@ -71,6 +91,7 @@ const Task = (props) => {
             color="error"
             onClick={props.deleteTask}
           >
+            <DeleteIcon />
             Delete
           </Button>
         </CardActions>
